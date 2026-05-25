@@ -2,6 +2,8 @@
     <string name="app_name">E_SensorFlingApp</string>
     <string name="highscore_zero">Highscore: 0</string>
     <string name="last_attempt_zero">Last attempt: 0</string>
+    <string name="highscore_value">Highscore: %1$d</string>
+    <string name="last_attempt_value">Last attempt: %1$d</string>
     <string name="restart">Restart</string>
     <string name="gravity">Schwerkraft</string>
 </resources>
