@@ -1,9 +1,13 @@
 package com.example.e_sensorflingapp;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewHighscore;
     private TextView textViewLastAttempt;
     private ProgressBar progressBarHighscore;
+    private SensorManager sensorManager;
+    private Sensor accelerationSensor;
     private int highscore;
     private int lastAttempt;
 
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         initViews();
+        initSensor();
         updateScoreViews();
     }
 
@@ -41,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
         progressBarHighscore.setMax(FlingCalculator.MAX_SCORE);
         buttonRestart.setOnClickListener(v -> resetHighscore());
+    }
+
+    private void initSensor() {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+
+        if (accelerationSensor == null) {
+            accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+
+        if (accelerationSensor == null) {
+            Toast.makeText(this, R.string.no_acceleration_sensor, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void resetHighscore() {
