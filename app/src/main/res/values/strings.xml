@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">E_SensorFlingApp</string>
+    <string name="highscore_zero">Highscore: 0</string>
+    <string name="last_attempt_zero">Last attempt: 0</string>
+    <string name="restart">Restart</string>
+    <string name="gravity">Schwerkraft</string>
 </resources>
