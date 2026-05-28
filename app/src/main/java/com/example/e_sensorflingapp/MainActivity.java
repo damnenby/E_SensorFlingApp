@@ -19,11 +19,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
+    private static final int MIN_ATTEMPT_SCORE = 50;
+
     private TextView textViewHighscore;
     private TextView textViewLastAttempt;
     private ProgressBar progressBarHighscore;
     private SensorManager sensorManager;
     private Sensor accelerationSensor;
+    private final FlingCalculator flingCalculator = new FlingCalculator();
     private int highscore;
     private int lastAttempt;
 
@@ -58,6 +61,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (event.values.length < 2) {
+            return;
+        }
+
+        int score = flingCalculator.calculateScore(event.values[0], event.values[1]);
+        if (score < MIN_ATTEMPT_SCORE) {
+            return;
+        }
+
+        lastAttempt = score;
+        if (score > highscore) {
+            highscore = score;
+        }
+        updateScoreViews();
     }
 
     @Override
