@@ -1,10 +1,13 @@
 package com.example.e_sensorflingapp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final int MIN_ATTEMPT_SCORE = 50;
     private static final int GRAVITY_DECAY_SCORE = 100;
+    private static final int REQUEST_POST_NOTIFICATIONS = 10;
     private static final long GRAVITY_DELAY_MS = 1000L;
 
     private TextView textViewHighscore;
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
         initViews();
         initSensor();
+        requestNotificationPermission();
         updateScoreViews();
     }
 
@@ -129,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if (accelerationSensor == null) {
             Toast.makeText(this, R.string.no_acceleration_sensor, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return;
+        }
+
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_POST_NOTIFICATIONS);
         }
     }
 
