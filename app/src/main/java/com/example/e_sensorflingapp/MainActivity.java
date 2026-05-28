@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ProgressBar progressBarHighscore;
     private SensorManager sensorManager;
     private Sensor accelerationSensor;
+    private NotificationHelper notificationHelper;
     private final Handler gravityHandler = new Handler(Looper.getMainLooper());
     private final FlingCalculator flingCalculator = new FlingCalculator();
     private final Runnable gravityRunnable = new Runnable() {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
         initViews();
         initSensor();
+        notificationHelper = new NotificationHelper(this);
         requestNotificationPermission();
         updateScoreViews();
     }
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         lastAttempt = score;
         if (score > highscore) {
             highscore = score;
+            notificationHelper.sendHighscoreNotification(highscore);
         }
         updateScoreViews();
     }
