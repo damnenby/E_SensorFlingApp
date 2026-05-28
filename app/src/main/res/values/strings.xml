@@ -7,4 +7,7 @@
     <string name="restart">Restart</string>
     <string name="gravity">Schwerkraft</string>
     <string name="no_acceleration_sensor">No acceleration sensor available</string>
+    <string name="notification_channel_name">Highscore</string>
+    <string name="notification_title">New Highscore</string>
+    <string name="notification_text">New highscore: %1$d</string>
 </resources>
