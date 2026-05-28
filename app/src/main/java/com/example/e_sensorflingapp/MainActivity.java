@@ -6,7 +6,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,13 +23,26 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final int MIN_ATTEMPT_SCORE = 50;
+    private static final int GRAVITY_DECAY_SCORE = 100;
+    private static final long GRAVITY_DELAY_MS = 1000L;
 
     private TextView textViewHighscore;
     private TextView textViewLastAttempt;
+    private CheckBox checkBoxGravity;
     private ProgressBar progressBarHighscore;
     private SensorManager sensorManager;
     private Sensor accelerationSensor;
+    private final Handler gravityHandler = new Handler(Looper.getMainLooper());
     private final FlingCalculator flingCalculator = new FlingCalculator();
+    private final Runnable gravityRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (checkBoxGravity != null && checkBoxGravity.isChecked()) {
+                decreaseHighscore();
+                gravityHandler.postDelayed(this, GRAVITY_DELAY_MS);
+            }
+        }
+    };
     private int highscore;
     private int lastAttempt;
 
@@ -51,12 +67,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerationSensor != null) {
             sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        if (checkBoxGravity != null && checkBoxGravity.isChecked()) {
+            startGravityDecay();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+        stopGravityDecay();
     }
 
     @Override
@@ -84,11 +104,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void initViews() {
         textViewHighscore = findViewById(R.id.textViewHighscore);
         textViewLastAttempt = findViewById(R.id.textViewLastAttempt);
+        checkBoxGravity = findViewById(R.id.checkBoxGravity);
         progressBarHighscore = findViewById(R.id.progressBarHighscore);
         Button buttonRestart = findViewById(R.id.buttonRestart);
 
         progressBarHighscore.setMax(FlingCalculator.MAX_SCORE);
         buttonRestart.setOnClickListener(v -> resetHighscore());
+        checkBoxGravity.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                startGravityDecay();
+            } else {
+                stopGravityDecay();
+            }
+        });
     }
 
     private void initSensor() {
@@ -108,6 +136,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         highscore = 0;
         lastAttempt = 0;
         updateScoreViews();
+    }
+
+    private void decreaseHighscore() {
+        highscore = Math.max(0, highscore - GRAVITY_DECAY_SCORE);
+        updateScoreViews();
+    }
+
+    private void startGravityDecay() {
+        gravityHandler.removeCallbacks(gravityRunnable);
+        gravityHandler.postDelayed(gravityRunnable, GRAVITY_DELAY_MS);
+    }
+
+    private void stopGravityDecay() {
+        gravityHandler.removeCallbacks(gravityRunnable);
     }
 
     private void updateScoreViews() {
