@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.E_SensorFlingApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="android:colorBackground">@color/colorSurfaceVariant</item>
+        <item name="android:textColorPrimary">@color/colorOnSurface</item>
+        <item name="android:textColorSecondary">@color/colorOnSurfaceSecondary</item>
     </style>
 
     <style name="Theme.E_SensorFlingApp" parent="Base.Theme.E_SensorFlingApp" />

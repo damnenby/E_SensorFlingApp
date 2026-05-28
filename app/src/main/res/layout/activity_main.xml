@@ -6,46 +6,91 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="@dimen/margin_default"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textViewHighscore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/highscore_zero"
-        android:textSize="24sp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:text="@string/app_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textViewLastAttempt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/last_attempt_zero"
-        android:textSize="20sp" />
+        android:background="@drawable/bg_card"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
 
-    <ProgressBar
-        android:id="@+id/progressBarHighscore"
-        style="?android:attr/progressBarStyleHorizontal"
+        <TextView
+            android:id="@+id/textViewHighscore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/highscore_zero"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewLastAttempt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/last_attempt_zero"
+            android:textColor="@color/colorOnSurfaceSecondary"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:max="5000"
-        android:progress="0" />
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@drawable/bg_card"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@string/progress_label"
+            android:textColor="@color/colorOnSurfaceSecondary"
+            android:textSize="13sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.08" />
+
+        <ProgressBar
+            android:id="@+id/progressBarHighscore"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="5000"
+            android:progress="0" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonRestart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="@dimen/margin_large"
+        android:minHeight="@dimen/button_min_height"
         android:text="@string/restart" />
 
     <CheckBox
         android:id="@+id/checkBoxGravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/gravity" />
+        android:layout_marginTop="@dimen/margin_default"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/gravity"
+        android:textSize="15sp" />
 
 </LinearLayout>
