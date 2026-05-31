@@ -25,6 +25,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
+    private static final String KEY_HIGHSCORE = "highscore";
+    private static final String KEY_LAST_ATTEMPT = "lastAttempt";
+    private static final String KEY_GRAVITY_ACTIVE = "gravityActive";
     private static final int MIN_ATTEMPT_SCORE = 50;
     private static final int GRAVITY_DECAY_SCORE = 100;
     private static final int REQUEST_POST_NOTIFICATIONS = 10;
@@ -65,7 +68,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initSensor();
         notificationHelper = new NotificationHelper(this);
         requestNotificationPermission();
+        restoreState(savedInstanceState);
         updateScoreViews();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_HIGHSCORE, highscore);
+        outState.putInt(KEY_LAST_ATTEMPT, lastAttempt);
+        outState.putBoolean(KEY_GRAVITY_ACTIVE, checkBoxGravity.isChecked());
     }
 
     @Override
@@ -148,6 +160,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_POST_NOTIFICATIONS);
         }
+    }
+
+    private void restoreState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        highscore = savedInstanceState.getInt(KEY_HIGHSCORE, 0);
+        lastAttempt = savedInstanceState.getInt(KEY_LAST_ATTEMPT, 0);
+        checkBoxGravity.setChecked(savedInstanceState.getBoolean(KEY_GRAVITY_ACTIVE, false));
     }
 
     private void resetHighscore() {
